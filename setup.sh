@@ -1,11 +1,11 @@
 #!/bin/bash
-#
-# Run this script from the directory where your git repositories will reside.
-#
 
 set -e
 
 touch ~/.zshrc
+
+mkdir -p ~/dev/notarize
+cd ~/dev/notarize
 
 # Verify preliminary requirements
 while true; do
@@ -109,7 +109,13 @@ read -n 1 -s -r -p "Press any key to continue once key authorization is complete
 echo "Downloading bootstrap repo from Github"
 git clone git@github.com:notarize/bootstrap.git
 
-echo "Initial Setup Complete. Next run bootstrap/bin/dev_setup.sh"
+read -n 1 -s -r -p "Initial Setup Complete. Next we will runbootstrap/bin/dev_setup.sh. Press any key to continue."
+
+cd ./bootstrap
+./bin/dev_setup.sh
+
+
+
 
 
 
