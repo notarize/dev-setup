@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Run this script from the directory where your git repositories will reside.
+#
 
 set -e
 
@@ -15,30 +18,59 @@ else
 fi
 
 # Install Brew
-echo "Installing Brew"
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if ! command -v brew &> /dev/null
+then
+  echo "Installing Brew"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else
+  echo "Brew is already installed. Continuing . . ."
+fi
 
 # Install tools through Brew
-echo "Installing Git"
-brew install git jq gh
+if ! command -v git &> /dev/null
+then
+  echo "Installing Git"
+  brew install git jq gh
+else
+  echo "Git is already installed. Continuing . . ."
+fi  
 
 # Install heroku
-echo "Installing Heroku"
-brew tap heroku/brew && brew install heroku
-
+if ! command -v heroku &> /dev/null
+then
+  echo "Installing Heroku"
+  brew tap heroku/brew && brew install heroku
+else
+  echo "Heroku is already installed. Continuing . . ."
+fi  
+  
 # install nvm
-echo "Installing NVM"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+if ! command -v node &> /dev/null
+then
+  echo "Installing NVM"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+ else
+  echo "NVM is already installed. Continuing . . ."
+fi   
 
 # Generate SSH key
-echo "Generating SSH key"
-ssh-keygen -t rsa -b 4096 -C `whoami` -N ''
+if [ -f ~/.ssh/id_rsa ]; then
+    echo "SSH key already exists. Continuing . . . "
+else
+  echo "Generating SSH key"
+  ssh-keygen -t rsa -b 4096 -C `whoami` -N ''
+fi
 
 # Upload key to github
+echo "Uploading SSH key to github"
 gh auth login -w 
 gh ssh-key add ~/.ssh/id_rsa.pub -t 'default'
 
-# authenticate with heroku
-HEROKU_ORGANIZATION=notarize heroku login --sso
-heroku auth:token
-heroku config -a notarize-api-next
+# clone bootstrap repo
+echo "Downloading bootstrap repo from Github"
+git clone git@github.com:notarize/bootstrap.git
+
+echo "Initial Setup Complete. Next run bootstrap/bin/dev_setup.sh"
+
+
+
