@@ -23,16 +23,6 @@ done
 echo "Enter your work email address: "
 read current_useremail
 
-# Install XCode command line  tools
-if ! command -v xcodebuild &> /dev/null
-then
-  echo "Installing Xcode Cli Tools"
-  sudo xcode-select --install
-  read -n 1 -s -r -p "Follow the dialogues to install xcode utilites. Once completed press any key to continue."
-else
-  echo "Xcode Cli Tools is already installed. Continuing . . ."
-fi
-
 # Install Brew
 if ! command -v brew &> /dev/null
 then
