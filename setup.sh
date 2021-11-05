@@ -96,14 +96,8 @@ ssh-add -K ~/.ssh/id_rsa
 fi
 
 # Upload ssh key to github
-pbcopy < ~/.ssh/id_rsa.pub
-echo "Your SSH key is copied to clipboard; about to open github page with key installation instructions, ready?"
-read
-open https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
-echo "Now authorize your new ssh key for SSO, about to open github settings page, CLICK on SSO there, ready?"
-read
-open https://github.com/settings/keys
-read -n 1 -s -r -p "Press any key to continue once key authorization is complete."
+echo "Authenticate into Github and upload SSH key into account."
+gh auth login -s write:public_key
 
 # clone bootstrap repo
 echo "Downloading bootstrap repo from Github"
