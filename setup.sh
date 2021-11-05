@@ -76,6 +76,7 @@ ssh-add -K ~/.ssh/id_rsa
 fi
 
 # Upload ssh key to github
+# TODO, add some instruction to do this manually if stuck on password prompt in browser
 echo "Authenticate into Github and upload SSH key into account."
 gh auth login -s write:public_key
 
