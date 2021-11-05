@@ -53,6 +53,16 @@ then
   echo "NVM is already installed. Continuing . . ."
 fi   
 
+# install docker
+if ! command -v docker &> /dev/null
+then
+  echo "Installing Docker"
+  open "https://desktop.docker.com/mac/main/amd64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-amd64"
+  read -n 1 -s -r -p "Install the Docker dmg. Press any key to continue once installation is complete."
+ else
+  echo "Docker is already installed. Continuing . . ."
+fi  
+
 # Generate SSH key
 if [ -f ~/.ssh/id_rsa ]; then
     echo "SSH key already exists. Continuing . . . "
