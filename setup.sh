@@ -19,6 +19,10 @@ while true; do
     esac
 done
 
+# get email address
+echo "Enter your work email address: "
+read current_useremail
+
 # Install XCode command line  tools
 if ! command -v xcodebuild &> /dev/null
 then
@@ -43,6 +47,8 @@ if ! command -v git &> /dev/null
 then
   echo "Installing Git"
   brew install git jq gh
+  git config --global user.name "`id -F`" 
+  git config --global user.email "$current_useremail"
 else
   echo "Git is already installed. Continuing . . ."
 fi  
@@ -70,7 +76,7 @@ if ! command -v docker &> /dev/null
 then
   echo "Installing Docker"
   open "https://desktop.docker.com/mac/main/amd64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-amd64"
-  read -n 1 -s -r -p "Install the Docker dmg. Press any key to continue once installation is complete."
+  read -n 1 -s -r -p "Install the Docker dmg once download completes. Press any key to continue once installation is complete."
  else
   echo "Docker is already installed. Continuing . . ."
 fi  
@@ -80,13 +86,24 @@ if [ -f ~/.ssh/id_rsa ]; then
     echo "SSH key already exists. Continuing . . . "
 else
   echo "Generating SSH key"
-  ssh-keygen -t rsa -b 4096 -C `whoami` -N ''
+  ssh-keygen -t rsa -b 4096 -C "$current_usermail" -N ''
+  echo "Host *" > ~/.ssh/config
+  echo " AddKeysToAgent yes" >> ~/.ssh/config
+  echo " UseKeychain yes" >> ~/.ssh/config
+  echo " IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
+
+ssh-add -K ~/.ssh/id_rsa
 fi
 
-# Upload key to github
-echo "Uploading SSH key to github"
-gh auth login -w 
-gh ssh-key add ~/.ssh/id_rsa.pub -t 'default'
+# Upload ssh key to github
+pbcopy < ~/.ssh/id_rsa.pub
+echo "Your SSH key is copied to clipboard; about to open github page with key installation instructions, ready?"
+read
+open https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+echo "Now authorize your new ssh key for SSO, about to open github settings page, CLICK on SSO there, ready?"
+read
+open https://github.com/settings/keys
+read -n 1 -s -r -p "Press any key to continue once key authorization is complete."
 
 # clone bootstrap repo
 echo "Downloading bootstrap repo from Github"
