@@ -102,4 +102,4 @@ git clone git@github.com:notarize/bootstrap.git ~/dev/notarize/bootstrap
 read -n 1 -s -r -p "Initial Setup Complete. Next we will run bootstrap/bin/dev_setup.sh. Press any key to continue."
 
 cd ~/dev/notarize/bootstrap
-./bin/setup --ssh
+./bin/dev_setup
