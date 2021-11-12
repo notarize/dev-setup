@@ -61,8 +61,8 @@ else
 fi
 
 # Misc stuff
-echo "Installing miscellaneous other tools"
-brew install jq gh
+echo "Installing miscellaneous other programs"
+brew install circleci gh jq slack
 
 # install nvm
 if ! command -v node &> /dev/null
