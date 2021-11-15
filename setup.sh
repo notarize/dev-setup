@@ -62,7 +62,7 @@ fi
 
 # Misc stuff
 echo "Installing miscellaneous other programs"
-brew install circleci gh jq slack
+brew install awscli circleci gh jq
 
 # install nvm
 if ! command -v node &> /dev/null
