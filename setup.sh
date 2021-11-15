@@ -34,7 +34,7 @@ if ! command -v git &> /dev/null
 then
   echo "Installing Git"
   brew install git
-  git config --global user.name "`id -F`"
+  git config --global user.name "$(id -F)"
   git config --global user.email "$current_useremail"
 else
   echo "Git is already installed. Continuing . . ."
@@ -78,7 +78,7 @@ if [ -f ~/.ssh/id_rsa ]; then
     echo "SSH key already exists. Continuing . . . "
 else
   echo "Generating SSH key"
-  ssh-keygen -t rsa -b 4096 -C "$current_usermail" -N '' -f ~/.ssh/id_rsa
+  ssh-keygen -t rsa -b 4096 -C "$current_useremail" -N '' -f ~/.ssh/id_rsa
   echo "Host *" > ~/.ssh/config
   echo " AddKeysToAgent yes" >> ~/.ssh/config
   echo " UseKeychain yes" >> ~/.ssh/config
@@ -90,7 +90,7 @@ verlte() {
 }
 
 verlt() {
-  [ "$1" = "$2" ] && return 1 || verlte $1 $2
+  [ "$1" = "$2" ] && return 1 || verlte "$1" "$2"
 }
 
 if (verlt "$(sw_vers -productVersion)" "12.0.0"); then
@@ -106,7 +106,7 @@ echo "Authenticate into Github and upload SSH key into account."
 # TODO Force sign-in to github with Okta URL
 gh config set -h github.com git_protocol ssh
 gh auth login -h github.com -s admin:public_key
-gh ssh-key add ~/.ssh/id_rsa.pub -t `id -un`
+gh ssh-key add ~/.ssh/id_rsa.pub -t "$(id -un)"
 
 # clone bootstrap repo
 echo "Downloading bootstrap repo from Github"
