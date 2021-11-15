@@ -85,7 +85,20 @@ else
   echo " IdentityFile ~/.ssh/id_rsa" >> ~/.ssh/config
 fi
 
-ssh-add --apple-use-keychain ~/.ssh/id_rsa
+verlte() {
+  [ "$1" = "$(echo -e "$1\n$2" | sort -V | head -n1)" ]
+}
+
+verlt() {
+  [ "$1" = "$2" ] && return 1 || verlte $1 $2
+}
+
+if (verlt "$(sw_vers -productVersion)" "12.0.0"); then
+  ssh-add -K ~/.ssh/id_rsa
+else
+  # MacOS Monterey deprecates the -K flag
+  ssh-add --apple-use-keychain ~/.ssh/id_rsa
+fi
 
 # Upload ssh key to github
 # TODO, add some instruction to do this manually if stuck on password prompt in browser
