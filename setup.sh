@@ -8,7 +8,7 @@ touch ~/.zshrc
 while true; do
     echo "Preliminary Requirements:"
     echo "Have you successfully authenticated into ALL of the following from your Okta dashboard:"
-    read -p "Github, Heroku, Docker Hub, AWS Single Sign-On? " yn
+    read -p "Github, Heroku, Docker Hub, AWS Single Sign-On? (Y/n) " yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) echo "Please authenticate into each of these first and then try again."; exit;;
